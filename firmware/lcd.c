@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <util/delay.h>
 #include "lcd.h"
 /* HD44780 LCD routine protoypes */
 // PORTB is data and control lines
@@ -6,9 +7,11 @@
 // PB4   -> LCD RS
 // PB5   -> LCD E
 
+#define DELAY_MULT 1
+
 void lcd_clock_byte(char cmd, int cmd_or_data) {
   PORTB &= ~(1 << 5);  // Bring E low
-  if (cmd_or_data == 0) {
+  if (cmd_or_data == RS_COMMAND) {
     PORTB &= ~(1 << 6);  // Bring RS low
   } else {
     PORTB |= (1 << 6);  // Bring RS low
@@ -18,26 +21,22 @@ void lcd_clock_byte(char cmd, int cmd_or_data) {
 }
 
 void lcd_raw_cmd(char cmd) {
-  lcd_clock_byte(cmd, 0);
-  lcd_delay(200);
+  lcd_clock_byte(cmd, RS_COMMAND);
+  _delay_us(300*DELAY_MULT);
 }
 
 void lcd_cmd(char cmd) {
-  lcd_clock_byte((cmd >> 4) & 0x0F, 0);
-  lcd_delay(200);
-  lcd_clock_byte(cmd & 0x0F, 0);
-  lcd_delay(200);
+  lcd_clock_byte((cmd >> 4) & 0x0F, RS_COMMAND);
+  _delay_us(300*DELAY_MULT);
+  lcd_clock_byte(cmd & 0x0F, RS_COMMAND);
+  _delay_us(300*DELAY_MULT);
 }
 
 void lcd_data(char data) {
-  lcd_clock_byte(data, 1);
-  lcd_delay(200);
+  lcd_clock_byte(data, RS_DATA);
+  _delay_us(300*DELAY_MULT);
 }
 
-
-void lcd_delay(int us) {
-  // TODO: Write delay routine
-}
 
 void lcd_clear() {
   lcd_cmd(0x01);
@@ -52,17 +51,17 @@ void lcd_init() {
   DDRB |= 0b00111111;
 
   // Delay 20ms to wait for LCD powerup
-  lcd_delay(20000);   // 20ms
+  _delay_ms(20*DELAY_MULT);   // 20ms
   
   PORTB = 0;          // Bring all control lines low
 
   lcd_raw_cmd(0x03);
-  lcd_delay(4800);
+  _delay_us(4800*DELAY_MULT);
 
   lcd_raw_cmd(0x03);
   lcd_raw_cmd(0x03);
   lcd_raw_cmd(0x02);
-  lcd_delay(4800);
+  _delay_us(4800*DELAY_MULT);
 
 
   lcd_cmd(0x28);    // 4 bits, 2 lines

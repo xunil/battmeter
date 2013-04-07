@@ -18,10 +18,10 @@
 # FUSES ........ Parameters for avrdude to flash the fuses appropriately.
 
 DEVICE     = atmega328p
-CLOCK      = 8000000
-PROGRAMMER = #-c stk500v2 -P avrdoper
+CLOCK      = 1000000
+PROGRAMMER = -c stk500v2 -P /dev/cu.PL2303-000013FA
 OBJECTS    = main.o lcd.o
-FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m
+FUSES      = -U lfuse:w:0xea:m -U hfuse:w:0xd9:m -U efuse:w:0x07:m
 
 # ATMega8 fuse bits used above (fuse bits for other devices are different!):
 # Example for 8 MHz internal oscillator

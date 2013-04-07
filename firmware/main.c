@@ -4,12 +4,27 @@
  */
 
 #include <avr/io.h>
+#include <util/delay.h>
+#include "lcd.h"
 
 int main(void)
 {
-    /* insert your hardware initialization here */
-    for(;;){
-        /* insert your main loop code here */
+  int x, y;
+  char c;
+
+  lcd_init();
+  while(1){
+    c = 0x21;
+    for(y = 0; y < 2; y++) {
+      for(x = 0; x < 16; x++) {
+        c++;
+        if(c > 0x7A)
+          c = 0x21;
+        lcd_moveto(x,y);
+        lcd_write(c);
+        _delay_ms(100);
+      }
     }
-    return 0;   /* never reached */
+  }
+  return 0;   /* never reached */
 }

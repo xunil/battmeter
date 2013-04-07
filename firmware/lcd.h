@@ -9,3 +9,6 @@ void lcd_on();
 void lcd_init();
 void lcd_write(char c);
 void lcd_moveto(int x, int y);
+
+#define RS_COMMAND 0
+#define RS_DATA 1
