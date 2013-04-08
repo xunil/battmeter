@@ -33,7 +33,9 @@ void lcd_cmd(char cmd) {
 }
 
 void lcd_data(char data) {
-  lcd_clock_byte(data, RS_DATA);
+  lcd_clock_byte((data >> 4) & 0x0F, RS_DATA);
+  _delay_us(300*DELAY_MULT);
+  lcd_clock_byte(data & 0x0F, RS_DATA);
   _delay_us(300*DELAY_MULT);
 }
 

@@ -14,15 +14,15 @@ int main(void)
 
   lcd_init();
   while(1){
-    c = 0x21;
+    c = 65;
     for(y = 0; y < 2; y++) {
       for(x = 0; x < 16; x++) {
         c++;
-        if(c > 0x7A)
-          c = 0x21;
+        if(c > 90)
+          c = 65;
         lcd_moveto(x,y);
         lcd_write(c);
-        _delay_ms(100);
+        _delay_ms(250);
       }
     }
   }
