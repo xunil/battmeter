@@ -9,33 +9,26 @@
 
 void lcd_clock_nibble(char cmd, int cmd_or_data) {
   if (cmd_or_data == RS_COMMAND) {
-    PORTB &= ~(1 << 5);  // Bring RS low
+    PORTB &= ~(1 << 4);  // Bring RS low
   } else {
-    PORTB |= (1 << 5);  // Bring RS low
+    PORTB |= (1 << 4);  // Bring RS low
   }
-  PORTB = (PORTB & 0b00110000) | (cmd & 0x0F);  // Leave control lines as-is, load low nibble of command byte
-  PORTB |= (1 << 6);  // Bring E high
-  _delay_us(200);
-  PORTB &= ~(1 << 6);  // Bring E low
-}
-
-void lcd_raw_cmd(char cmd) {
-  lcd_clock_nibble(cmd, RS_COMMAND);
-  _delay_us(300);
+  PORTB = (PORTB & 0x30) | (cmd & 0x0F);  // Leave control lines as-is, load low nibble of command byte
+  _delay_ms(1);
+  PORTB |= (1 << 5);  // Bring E high
+  _delay_ms(1);
+  PORTB &= ~(1 << 5);  // Bring E low
+  _delay_ms(1);
 }
 
 void lcd_cmd(char cmd) {
   lcd_clock_nibble((cmd >> 4) & 0x0F, RS_COMMAND);
-  _delay_us(300);
   lcd_clock_nibble(cmd & 0x0F, RS_COMMAND);
-  _delay_us(300);
 }
 
 void lcd_data(char data) {
   lcd_clock_nibble((data >> 4) & 0x0F, RS_DATA);
-  _delay_us(300);
   lcd_clock_nibble(data & 0x0F, RS_DATA);
-  _delay_us(300);
 }
 
 void lcd_home() {
@@ -59,17 +52,16 @@ void lcd_init() {
   
   PORTB = 0;          // Bring all control lines low
 
-  lcd_cmd(CMD_FUNCTION_SET | INTERFACE_4BIT | LINES_2 | FONT_5X10); // 4 bits, 2 lines
-  _delay_us(4800);
+  lcd_cmd(CMD_FUNCTION_SET | INTERFACE_4BIT | LINES_2 | FONT_5X8); // 4 bits, 2 lines
+  _delay_ms(5);
 
   lcd_cmd(CMD_DISPLAY_SHIFT | MOVE_CURSOR | RIGHT);    // cursor move, right
-  _delay_us(4800);
+  _delay_ms(5);
   lcd_cmd(CMD_ENTRY_MODE | INCREMENT | NO_SHIFT);    // don't shift display
-  _delay_us(4800);
+  _delay_ms(5);
   lcd_clear();
-  _delay_us(4800);
+  _delay_ms(5);
   lcd_on();
-  _delay_us(4800);
 }
 
 void lcd_write(char c) {

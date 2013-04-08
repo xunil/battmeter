@@ -1,6 +1,5 @@
 /* HD44780 LCD routine protoypes */
 void lcd_clock_nibble(char cmd, int cmd_or_data);
-void lcd_raw_cmd(char cmd);
 void lcd_cmd(char cmd);
 void lcd_data(char data);
 void lcd_delay(int us);

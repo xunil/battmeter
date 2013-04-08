@@ -12,22 +12,20 @@ int main(void)
   int x, y;
   char c;
 
-  lcd_init();
-  lcd_moveto(0,0);
-  lcd_write('T');
   while(1){
+    lcd_init();
     c = 65;
     for(y = 0; y < 2; y++) {
       for(x = 0; x < 16; x++) {
         c++;
-        //if(c > 0x7A)
         if(c > 90)
           c = 65;
         lcd_moveto(x,y);
-        lcd_write('Q');
+        lcd_write(c);
         _delay_ms(100);
       }
     }
+    _delay_ms(5000);
   }
   return 0;   /* never reached */
 }
