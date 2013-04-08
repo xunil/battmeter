@@ -13,13 +13,13 @@ int main(void)
   char c;
 
   lcd_init();
-  c = 0x40;
+  c = 0x1F;
   while(1){
     for(y = 0; y < 2; y++) {
+      c++;
+      if(c > 0xFE)
+        c = 0x1F;
       for(x = 0; x < 16; x++) {
-        c++;
-        if(c > 0x7A)
-          c = 0x40;
         lcd_moveto(x,y);
         lcd_write(c);
       }
