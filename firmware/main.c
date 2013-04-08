@@ -13,18 +13,19 @@ int main(void)
   char c;
 
   lcd_init();
+  c = 0x40;
   while(1){
-    c = 65;
     for(y = 0; y < 2; y++) {
       for(x = 0; x < 16; x++) {
         c++;
-        if(c > 90)
-          c = 65;
+        if(c > 0x7A)
+          c = 0x40;
         lcd_moveto(x,y);
         lcd_write(c);
-        _delay_ms(250);
       }
     }
+    //lcd_clear();
+    _delay_ms(500);
   }
   return 0;   /* never reached */
 }
