@@ -20,7 +20,7 @@
 DEVICE     = atmega328p
 CLOCK      = 1000000
 PROGRAMMER = -c stk500v2 -P /dev/cu.PL2303-000013FA
-OBJECTS    = main.o lcd.o
+OBJECTS    = main.o lcd.o twi.o
 FUSES      = -U lfuse:w:0xea:m -U hfuse:w:0xd9:m -U efuse:w:0x07:m
 
 # ATMega8 fuse bits used above (fuse bits for other devices are different!):
