@@ -9,6 +9,7 @@ void lcd_home();
 void lcd_init();
 void lcd_write(char c);
 void lcd_moveto(int x, int y);
+void lcd_custom_char(int n, char *pattern);
 
 #define RS_COMMAND 0
 #define RS_DATA 1

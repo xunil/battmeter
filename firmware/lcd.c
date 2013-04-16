@@ -41,7 +41,7 @@ void lcd_clear() {
 }
 
 void lcd_on() {
-  lcd_cmd(CMD_DISPLAY_CTRL | DISPLAY_ON | CURSOR_ON | BLINK_ON);
+  lcd_cmd(CMD_DISPLAY_CTRL | DISPLAY_ON | CURSOR_OFF | BLINK_OFF);
 }
 
 void lcd_init() {
@@ -53,7 +53,6 @@ void lcd_init() {
 
   lcd_cmd(CMD_DISPLAY_SHIFT | MOVE_CURSOR | RIGHT);
   lcd_cmd(CMD_ENTRY_MODE | INCREMENT | NO_SHIFT);
-  lcd_clear();
   lcd_on();
 }
 
@@ -67,4 +66,12 @@ void lcd_moveto(int x, int y) {
   addr += x;
 
   lcd_cmd(addr);
+}
+
+void lcd_custom_char(int n, char *pattern) {
+  int i;
+  lcd_cmd(0x40+n);
+  for(i=0; i<8; i++) {
+    lcd_data(pattern[i]);
+  }
 }
